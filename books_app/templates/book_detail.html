@@ -1,43 +1,37 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
 <h1>{{ book.title }}</h1>
 
-<!-- TODO: Show this only if the user is logged in and the book is not in their 
-    favorites-->
-<form action="/favorite/{{ book.id }}" method="POST">
-    <input type="submit" value="Favorite This Book">
-</form>
-
-
-<!-- TODO: Show this only if the user is logged in and the book is not in their 
-    favorites-->
-<form action="/unfavorite/{{ book.id }}" method="POST">
-    <input type="submit" value="Unfavorite This Book">
-</form>
+{% if current_user.is_authenticated %}
+    {% if book not in current_user.favorite_books %}
+        <!-- Show only if the user is logged in and the book is not in their favorites -->
+        <form action="/favorite/{{ book.id }}" method="POST">
+            <input type="submit" value="Favorite This Book">
+        </form>
+    {% else %}
+        <!-- Show only if the user is logged in and the book is in their favorites -->
+        <form action="/unfavorite/{{ book.id }}" method="POST">
+            <input type="submit" value="Unfavorite This Book">
+        </form>
+    {% endif %}
+{% endif %}
 
 <p>
     <strong>Author</strong>: {{ book.author.name }}
 </p>
-
 <p>
     <strong>Author Bio</strong>: {{ book.author.biography }}
 </p>
-
 <p>
     <strong>Publish date</strong>: {{ book.publish_date }}
 </p>
-
 <p>
     <strong>Audience</strong>: {{ book.audience }}
 </p>
-
 <p>
-    <strong>Genres</strong>: 
-    
+    <strong>Genres</strong>:
     {% for genre in book.genres %}
-    {{ genre.name }},
+        {{ genre.name }}{% if not loop.last %}, {% endif %}
     {% endfor %}
 </p>
 
@@ -45,24 +39,29 @@
     {{ form.csrf_token }}
     <fieldset>
         <legend>Edit this book</legend>
-
-        {{ form.title.label }}
-        {{ form.title }}
-        
-        {{ form.publish_date.label }}
-        {{ form.publish_date(placeholder="YYYY-mm-dd") }}
-        
-        {{ form.author.label }}
-        {{ form.author }}
-        
-        {{ form.audience.label }}
-        {{ form.audience }}
-        
-        {{ form.genres.label }}
-        {{ form.genres }}
-            
-        {{ form.submit }}
+        <div class="form-group">
+            {{ form.title.label }}
+            {{ form.title }}
+        </div>
+        <div class="form-group">
+            {{ form.publish_date.label }}
+            {{ form.publish_date(placeholder="YYYY-mm-dd") }}
+        </div>
+        <div class="form-group">
+            {{ form.author.label }}
+            {{ form.author }}
+        </div>
+        <div class="form-group">
+            {{ form.audience.label }}
+            {{ form.audience }}
+        </div>
+        <div class="form-group">
+            {{ form.genres.label }}
+            {{ form.genres }}
+        </div>
+        <div class="form-group">
+            {{ form.submit }}
+        </div>
     </fieldset>
 </form>
-
 {% endblock %}
