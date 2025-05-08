@@ -84,7 +84,7 @@ book_genre_table = db.Table('book_genre',
 )
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
