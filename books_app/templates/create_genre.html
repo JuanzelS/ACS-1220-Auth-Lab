@@ -1,9 +1,30 @@
 {% extends 'base.html' %}
-
 {% block content %}
+<h1>Create New Genre</h1>
+<p>Add a new book genre to the database.</p>
 
-<p>Genre creation form.</p>
-
-<!-- TODO: Add a <form> element here and use the form variable to show the labels & fields -->
+<form method="POST">
+    {{ form.csrf_token }}
+    
+    <fieldset>
+        <legend>Genre Information</legend>
+        
+        <div class="form-group">
+            {{ form.name.label }}
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="error">
+                    {% for error in form.name.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.submit }}
+        </div>
+    </fieldset>
+</form>
 
 {% endblock %}
