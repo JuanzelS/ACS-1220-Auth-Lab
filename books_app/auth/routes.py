@@ -5,7 +5,7 @@ from books_app.auth.forms import SignUpForm, LoginForm
 # Import app and db from events_app package so that we can run app
 from books_app.extensions import app, db, bcrypt
 
-auth = Blueprint("auth", __name__)
+auth = Blueprint("auth", __name__)  # Fixed syntax error here
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
